@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SiPi</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+    <string name="logout">LOGOUT</string>
+    <string name="username">Enter your username</string>
+    <string name="password">Enter your password</string>
+    <string name="title_home">Home</string>
+    <string name="tittle_add_report">Add Report</string>
+    <string name="title_profile">Profile</string>
+    <string name="email">Enter your email</string>
+    <string name="name">Enter your name</string>
+</resources>
