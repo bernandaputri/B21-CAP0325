@@ -27,11 +27,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
@@ -39,6 +34,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
         userPref = UserPreferences(requireContext())
 
         binding.btnLogin.setOnClickListener(this)
+
+        return binding.root
     }
 
     override fun onClick(v: View?) {

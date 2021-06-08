@@ -12,16 +12,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arjuna.sipiapp.R
+import com.arjuna.sipiapp.UserPreferences
 import com.arjuna.sipiapp.databinding.FragmentAddReportBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
+import kotlin.collections.HashMap
 
 class AddReportFragment : Fragment() {
 
     private lateinit var binding: FragmentAddReportBinding
     private lateinit var firebaseFirestore: FirebaseFirestore
-    private lateinit var selectedImage: Uri
+    private lateinit var imgUrl: String
+    private lateinit var userPref: UserPreferences
+    private lateinit var imgFilename: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +39,29 @@ class AddReportFragment : Fragment() {
 
         binding.btnImage.setOnClickListener { selectImage() }
 
-        binding.btnSend.setOnClickListener { postForm() }
+        binding.btnSend.setOnClickListener {
+            validateForm()
+
+        }
 
         return binding.root
+    }
+
+    private fun validateForm() {
+        val title = binding.edtReportTitle.text.toString()
+        val location = binding.edtLocation.text.toString()
+
+        if (title.isEmpty()) {
+            binding.edtReportTitle.error = "Harus diisi."
+        }
+
+        if (location.isEmpty()) {
+            binding.edtLocation.error = "Harus diisi."
+        }
+
+        if (title.isNotEmpty() && location.isNotEmpty()) {
+            postForm(title, location)
+        }
     }
 
     private fun selectImage() {
@@ -46,7 +70,23 @@ class AddReportFragment : Fragment() {
         startActivityForResult(pickImage, 100)
     }
 
-    private fun postForm() {
+    private fun postForm(title: String, location: String) {
+        userPref = UserPreferences(requireContext())
+        val userModel = userPref.getUser()
+
+        val reportId = firebaseFirestore.collection("reports").document().id
+        val reportDb = firebaseFirestore.collection("reports").document(reportId)
+        val report = HashMap<String, Any>()
+        report["report_id"] = reportId
+        report["title"] = title
+        report["location"] = location
+        report["reported_by"] = userModel.username.toString()
+        report["imageUrl"] = imgUrl
+        report["status"] = ""
+        report["filename"] = imgFilename
+        reportDb.set(report).addOnSuccessListener {
+            clearForm()
+        }
 
     }
 
@@ -66,12 +106,15 @@ class AddReportFragment : Fragment() {
             val imgBitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
 
             val bitmapDrawable = BitmapDrawable(imgBitmap)
-            binding.btnImage.setBackgroundDrawable(bitmapDrawable)
+            binding.imageView.setImageDrawable(bitmapDrawable)
+
+            uploadImageProcess()
         }
     }
 
     private fun uploadImageProcess() {
-        val fileName = UUID.randomUUID().toString()
-        val firebaseStorage = FirebaseStorage.getInstance().getReference("/projectlist1/$fileName")
+        imgFilename = UUID.randomUUID().toString()
+        val firebaseStorage = FirebaseStorage.getInstance().getReference("/projectlist1/${imgFilename}.jpg")
+        imgUrl = firebaseStorage.downloadUrl.toString()
     }
 }
