@@ -50,8 +50,8 @@ class AddReportFragment : Fragment() {
         binding.btnImage.setOnClickListener { selectImage() }
 
         binding.btnSend.setOnClickListener {
-            validateForm()
-            predict()
+            binding.progressBar.visibility = View.VISIBLE
+            uploadImageProcess()
         }
 
         return binding.root
@@ -70,15 +70,8 @@ class AddReportFragment : Fragment() {
         }
 
         if (title.isNotEmpty() && location.isNotEmpty()) {
-            uploadImageProcess()
             postForm(title, location)
         }
-    }
-
-    private fun selectImage() {
-        val pickImage = Intent(Intent.ACTION_GET_CONTENT)
-        pickImage.type = "image/*"
-        startActivityForResult(pickImage, 100)
     }
 
     private fun postForm(title: String, location: String) {
@@ -97,7 +90,9 @@ class AddReportFragment : Fragment() {
         report["status"] = ""
         report["filename"] = imgFilename
         reportDb.set(report).addOnSuccessListener {
+            binding.progressBar.visibility = View.GONE
             clearForm()
+//            predict()
         }
 
     }
@@ -168,12 +163,18 @@ class AddReportFragment : Fragment() {
         }
     }
 
+    private fun selectImage() {
+        val pickImage = Intent(Intent.ACTION_PICK)
+        pickImage.type = "image/jpg"
+        startActivityForResult(pickImage, 100)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data?.data!!
-            val imgBitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+            val imgBitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
 
             val bitmapDrawable = BitmapDrawable(imgBitmap)
             binding.imageView.setImageDrawable(bitmapDrawable)
@@ -181,13 +182,15 @@ class AddReportFragment : Fragment() {
     }
 
     private fun uploadImageProcess() {
-        imgFilename = UUID.randomUUID().toString()
-        val firebaseStorage = FirebaseStorage.getInstance().getReference("/projectlist1/$imgFilename")
+        imgFilename = UUID.randomUUID().toString() + ".jpg"
+        val firebaseStorage = FirebaseStorage.getInstance("gs://projectlist1").getReference("$imgFilename")
 
         firebaseStorage.putFile(imageUri)
             .addOnSuccessListener {
                 firebaseStorage.downloadUrl.addOnSuccessListener {
                     imgUrl = it.toString()
+
+                    validateForm()
                 }
             }
     }

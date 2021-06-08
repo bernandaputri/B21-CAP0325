@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.addreport.AddReportFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_send"
         android:layout_width="wrap_content"
@@ -67,7 +74,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/input_report_location"
                 android:inputType="textMultiLine"
-                android:minLines="4"
+                android:minLines="3"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:editable="false"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"

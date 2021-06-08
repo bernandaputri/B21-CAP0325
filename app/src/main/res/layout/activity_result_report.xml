@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.report.ResultReportFragment">
+    tools:context=".ui.result.ResultReportActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,14 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/edt_report_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:editable="false"
             android:hint="@string/input_report_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,14 +46,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edt_report_title"/>
 
-        <EditText
+        <TextView
             android:id="@+id/edt_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_report_location"
             android:inputType="textMultiLine"
-            android:minLines="4"
-            android:editable="false"
+            android:minLines="3"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
@@ -76,8 +76,8 @@
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:visibility="visible"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
@@ -108,6 +108,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/report_status"/>
+
+        <TextView
+            android:id="@+id/report_uploader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/report_result"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

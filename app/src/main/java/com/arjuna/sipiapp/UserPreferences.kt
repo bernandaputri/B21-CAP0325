@@ -7,6 +7,7 @@ class UserPreferences (context: Context) {
 
     companion object {
         const val PREFS_NAME = "user_pref"
+        const val EMAIL = "email"
         const val USERNAME = "username"
         const val NAME = "name"
     }
@@ -15,6 +16,7 @@ class UserPreferences (context: Context) {
 
     fun setUser (value: UserModel) {
         val editor = preferences.edit()
+        editor.putString(EMAIL, value.email)
         editor.putString(USERNAME, value.username)
         editor.putString(NAME, value.name)
         editor.apply()
@@ -22,6 +24,7 @@ class UserPreferences (context: Context) {
 
     fun getUser(): UserModel {
         val model = UserModel()
+        model.email = preferences.getString(EMAIL, "")
         model.username = preferences.getString(USERNAME, "")
         model.name = preferences.getString(NAME, "")
 
@@ -30,6 +33,7 @@ class UserPreferences (context: Context) {
 
     fun removeUser() {
         val editor = preferences.edit()
+        editor.remove(EMAIL)
         editor.remove(USERNAME)
         editor.remove(NAME)
         editor.apply()

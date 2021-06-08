@@ -83,9 +83,10 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             user["password"] = password
             user["fullname"] = name
             user["username"] = username
-            documentReference.set(user)
-            val userModel = UserModel(username, name)
-            userPref.setUser(userModel)
+            documentReference.set(user).addOnSuccessListener {
+                val userModel = UserModel(email, username, name)
+                userPref.setUser(userModel)
+            }
             val registerIntent = Intent(activity, MainActivity::class.java)
             startActivity(registerIntent)
             activity?.finish()

@@ -11,7 +11,7 @@
     <string name="email">Masukkan email</string>
     <string name="name">Masukkan nama</string>
     <string name="report_name">Nama Laporan</string>
-    <string name="report_sender">Dilaporkan oleh %s</string>
+    <string name="report_sender">Pengirim Laporan</string>
     <string name="report_status">Tingkat Kerusakan</string>
     <string name="input_report_name">Masukkan nama laporan</string>
     <string name="report_location">Lokasi Kerusakan</string>

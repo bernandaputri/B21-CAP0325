@@ -68,7 +68,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     if (email == it.data["email"] && password == it.data["password"]) {
                         val username = it.data["username"].toString()
                         val name = it.data["fullname"].toString()
-                        val userModel = UserModel(username, name)
+                        val userModel = UserModel(email, username, name)
                         userPref.setUser(userModel)
                     } else {
                         Toast.makeText(activity, "Email/Password tidak sesuai.", Toast.LENGTH_SHORT).show()
