@@ -36,6 +36,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
 
+        userPref = UserPreferences(requireContext())
+
         binding.btnLogin.setOnClickListener(this)
     }
 
@@ -55,7 +57,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
             binding.edtEmail.error = getString(R.string.email_invalid)
         }
 
-//        processUser(email, password)
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            processUser(email, password)
+        }
 
     }
 
@@ -65,9 +69,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
             firebaseFirestore.collection("users").whereEqualTo("email", email).get().addOnSuccessListener { it ->
                 it.forEach {
                     if (email == it.data["email"] && password == it.data["password"]) {
-                        val username = it.data["username"]
-                        val name = it.data["fullname"]
-                        val userModel = UserModel(username as String?, name as String?)
+                        val username = it.data["username"].toString()
+                        val name = it.data["fullname"].toString()
+                        val userModel = UserModel(username, name)
                         userPref.setUser(userModel)
                     } else {
                         Toast.makeText(activity, "Email/Password tidak sesuai.", Toast.LENGTH_SHORT).show()
@@ -76,6 +80,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
             val loginIntent = Intent(activity, MainActivity::class.java)
             startActivity(loginIntent)
+            activity?.finish()
         }
     }
 

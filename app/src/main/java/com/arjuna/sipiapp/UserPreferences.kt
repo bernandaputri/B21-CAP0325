@@ -28,4 +28,11 @@ class UserPreferences (context: Context) {
         return model
     }
 
+    fun removeUser() {
+        val editor = preferences.edit()
+        editor.remove(USERNAME)
+        editor.remove(NAME)
+        editor.apply()
+    }
+
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.arjuna.sipiapp.MainActivity
 import com.arjuna.sipiapp.R
+import com.arjuna.sipiapp.UserPreferences
+import com.arjuna.sipiapp.data.UserModel
 import com.arjuna.sipiapp.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +20,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseFirestore: FirebaseFirestore
+    private lateinit var userPref: UserPreferences
     private lateinit var userId: String
 
     override fun onCreateView(
@@ -33,6 +36,8 @@ class RegisterFragment : Fragment(), View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
+
+        userPref = UserPreferences(requireContext())
 
         binding.btnRegister.setOnClickListener(this)
     }
@@ -63,7 +68,9 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             binding.edtEmail.error = getString(R.string.email_invalid)
         }
 
-        saveUser(email, password, name, username)
+        if (email.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
+            saveUser(email, password, name, username)
+        }
     }
 
     private fun saveUser(email: String, password: String, name: String, username: String) {
@@ -77,8 +84,11 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             user["fullname"] = name
             user["username"] = username
             documentReference.set(user)
+            val userModel = UserModel(username, name)
+            userPref.setUser(userModel)
             val registerIntent = Intent(activity, MainActivity::class.java)
             startActivity(registerIntent)
+            activity?.finish()
         }.addOnFailureListener {
             Toast.makeText(activity, "Terjadi kesalahan.", Toast.LENGTH_SHORT).show()
         }
