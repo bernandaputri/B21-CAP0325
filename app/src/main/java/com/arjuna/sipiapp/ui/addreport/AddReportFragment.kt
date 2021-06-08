@@ -7,15 +7,22 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arjuna.sipiapp.R
 import com.arjuna.sipiapp.UserPreferences
+import com.arjuna.sipiapp.data.PredictResponse
 import com.arjuna.sipiapp.databinding.FragmentAddReportBinding
+import com.arjuna.sipiapp.network.ApiConfig
+import com.arjuna.sipiapp.network.ApiService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -24,8 +31,11 @@ class AddReportFragment : Fragment() {
     private lateinit var binding: FragmentAddReportBinding
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var imgUrl: String
+    private lateinit var imageUri: Uri
     private lateinit var userPref: UserPreferences
     private lateinit var imgFilename: String
+    private lateinit var damageStatus: String
+    private lateinit var reportId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +51,7 @@ class AddReportFragment : Fragment() {
 
         binding.btnSend.setOnClickListener {
             validateForm()
-
+            predict()
         }
 
         return binding.root
@@ -60,6 +70,7 @@ class AddReportFragment : Fragment() {
         }
 
         if (title.isNotEmpty() && location.isNotEmpty()) {
+            uploadImageProcess()
             postForm(title, location)
         }
     }
@@ -71,10 +82,11 @@ class AddReportFragment : Fragment() {
     }
 
     private fun postForm(title: String, location: String) {
+
         userPref = UserPreferences(requireContext())
         val userModel = userPref.getUser()
 
-        val reportId = firebaseFirestore.collection("reports").document().id
+        reportId = firebaseFirestore.collection("reports").document().id
         val reportDb = firebaseFirestore.collection("reports").document(reportId)
         val report = HashMap<String, Any>()
         report["report_id"] = reportId
@@ -90,6 +102,64 @@ class AddReportFragment : Fragment() {
 
     }
 
+    private fun predict() {
+        val client = ApiConfig.getApiService().predictObject(imgFilename)
+        client.enqueue(object : Callback<PredictResponse> {
+            override fun onResponse(
+                call: Call<PredictResponse>,
+                response: Response<PredictResponse>
+            ) {
+                val predictReport = response.body()
+                val minorBuilding = predictReport?.minorBuilding.toString()
+                val minorBridge = predictReport?.minorBridge.toString()
+                val minorRoad = predictReport?.minorRoad.toString()
+                val moderateBuilding = predictReport?.moderateBuilding.toString()
+                val moderateBridge = predictReport?.moderateBridge.toString()
+                val moderateRoad = predictReport?.moderateRoad.toString()
+                val heavyBuilding = predictReport?.heavyBuilding.toString()
+                val heavyBridge = predictReport?.heavyBridge.toString()
+                val heavyRoad = predictReport?.heavyRoad.toString()
+
+                if (minorBuilding == "1.0") {
+                    damageStatus = "Bangunan rusak ringan."
+                } else if (minorBridge == "1.0") {
+                    damageStatus = "Jembatan rusak ringan."
+                } else if (minorRoad == "1.0") {
+                    damageStatus = "Jalan rusak ringan."
+                } else if (moderateBuilding == "1.0") {
+                    damageStatus = "Bagungan rusak sedang."
+                } else if (moderateBridge == "1.0") {
+                    damageStatus = "Jembatan rusak sedang."
+                } else if (moderateRoad == "1.0") {
+                    damageStatus = "Jalan rusak sedang."
+                } else if (heavyBuilding == "1.0") {
+                    damageStatus = "Bangunan rusak berat."
+                } else if (heavyBridge == "1.0") {
+                    damageStatus = "Jembatan rusak berat."
+                } else if (heavyRoad == "1.0") {
+                    damageStatus = "Jalan rusak berat."
+                }
+
+                updateStatus()
+            }
+
+            override fun onFailure(call: Call<PredictResponse>, t: Throwable) {
+                Log.e("Post failed: ", t.message.toString())
+            }
+
+        })
+    }
+
+    private fun updateStatus() {
+        userPref = UserPreferences(requireContext())
+
+        val status = hashMapOf(
+            "status" to damageStatus
+        )
+
+        firebaseFirestore.collection("reports").document(reportId).set(status)
+    }
+
     private fun clearForm() {
         with(binding) {
             edtReportTitle.setText("")
@@ -102,19 +172,23 @@ class AddReportFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
-            val imageUri = data?.data!!
+            imageUri = data?.data!!
             val imgBitmap: Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
 
             val bitmapDrawable = BitmapDrawable(imgBitmap)
             binding.imageView.setImageDrawable(bitmapDrawable)
-
-            uploadImageProcess()
         }
     }
 
     private fun uploadImageProcess() {
         imgFilename = UUID.randomUUID().toString()
-        val firebaseStorage = FirebaseStorage.getInstance().getReference("/projectlist1/${imgFilename}.jpg")
-        imgUrl = firebaseStorage.downloadUrl.toString()
+        val firebaseStorage = FirebaseStorage.getInstance().getReference("/projectlist1/$imgFilename")
+
+        firebaseStorage.putFile(imageUri)
+            .addOnSuccessListener {
+                firebaseStorage.downloadUrl.addOnSuccessListener {
+                    imgUrl = it.toString()
+                }
+            }
     }
 }

@@ -7,7 +7,7 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @POST("predict?path={file_name}")
+    @POST("predict?path={file_name}.jpg")
     fun predictObject(
         @Path("file_name") file_name:String
     ): Call<PredictResponse>
