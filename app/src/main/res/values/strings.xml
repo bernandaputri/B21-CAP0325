@@ -10,8 +10,6 @@
     <string name="title_profile">Profil</string>
     <string name="email">Masukkan email</string>
     <string name="name">Masukkan nama</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="report_name">Nama Laporan</string>
     <string name="report_sender">Dilaporkan oleh %s</string>
     <string name="report_status">Tingkat Kerusakan</string>
@@ -21,4 +19,10 @@
     <string name="report_image">Bukti Kerusakan</string>
     <string name="choose_image">Pilih Gambar</string>
     <string name="report_result">Hasil</string>
+    <string name="email_required">Email harus diisi</string>
+    <string name="password_required">Password harus diisi</string>
+    <string name="email_invalid">Email tidak sesuai</string>
+    <string name="login_text">Masukkan email/username</string>
+    <string name="name_required">Nama harus diisi</string>
+    <string name="username_required">Username harus diisi</string>
 </resources>

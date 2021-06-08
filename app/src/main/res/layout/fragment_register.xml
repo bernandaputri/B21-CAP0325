@@ -32,7 +32,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:autofillHints="@string/email"
-        android:drawableStart="@drawable/ic_account"
+        android:drawableStart="@drawable/ic_email"
         android:drawablePadding="8dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
@@ -41,6 +41,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_name" />
+
+    <EditText
+        android:id="@+id/edt_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints="@string/username"
+        android:drawableStart="@drawable/ic_account"
+        android:drawablePadding="8dp"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_email" />
 
     <EditText
         android:id="@+id/edt_password"
@@ -58,10 +76,10 @@
         android:textColorHint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_username" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

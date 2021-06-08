@@ -16,8 +16,7 @@
         android:theme="@style/Theme.SipiApp">
         <activity android:name=".ui.auth.AuthActivity"/>
         <activity
-            android:name=".ui.splashscreen.SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".ui.splashscreen.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
