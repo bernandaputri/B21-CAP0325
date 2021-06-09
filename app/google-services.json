@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "260568347909",
+    "firebase_url": "https://arjuna-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "arjuna-project",
+    "storage_bucket": "arjuna-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260568347909:android:bd651c2ec583b5a008f36c",
+        "android_client_info": {
+          "package_name": "com.arjuna.sipiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260568347909-9sdhjp2v9dpesrku4jqiti5na67be7pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJHmQPM-K7drH3dxXf2BwxTAX1TFjoMwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260568347909-9sdhjp2v9dpesrku4jqiti5na67be7pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
