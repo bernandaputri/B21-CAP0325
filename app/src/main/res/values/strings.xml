@@ -27,4 +27,5 @@
     <string name="username_required">Username harus diisi</string>
     <string name="send_report">Kirim Laporan</string>
     <string name="no_data">Tidak ada data.</string>
+    <string name="detail_report">Detail Laporan</string>
 </resources>

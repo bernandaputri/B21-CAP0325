@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arjuna.sipiapp.MainViewModel
 import com.arjuna.sipiapp.R
@@ -32,6 +33,9 @@ class HomeFragment : Fragment() {
             reportList.layoutManager = LinearLayoutManager(context)
             reportList.adapter = homeAdapter
             reportList.setHasFixedSize(true)
+            reportList.apply {
+                addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            }
         }
 
         mainViewModel.getAllReport(binding).observe(viewLifecycleOwner, {

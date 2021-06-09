@@ -9,21 +9,12 @@ import com.arjuna.sipiapp.databinding.ItemListBinding
 import com.arjuna.sipiapp.ui.result.ResultReportActivity
 import com.arjuna.sipiapp.ui.result.ResultReportActivity.Companion.EXTRA_DATA
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
 class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.ListViewHolder>() {
 
     private var listReport = ArrayList<ReportEntity>()
-
-//    private var onItemClickCallback: CustomOnItemClickListener.OnItemClickCallback? = null
-//
-//    fun setOnItemClickCallback(onItemClickCallback: CustomOnItemClickListener.OnItemClickCallback) {
-//        this.onItemClickCallback = onItemClickCallback
-//    }
-//
-//    interface OnItemClickCallback {
-//        fun onItemClicked(reportEntity: ReportEntity)
-//    }
 
     fun setReports(report: List<ReportEntity>) {
         this.listReport.clear()
@@ -40,6 +31,7 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.ListViewHolder>() {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(reportEntity.reportImage)
+                    .transform(RoundedCorners(15))
                     .apply(RequestOptions().override(60,60))
                     .into(reportImage)
 

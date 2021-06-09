@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arjuna.sipiapp.MainViewModel
 import com.arjuna.sipiapp.R
@@ -49,6 +50,9 @@ class ProfileFragment : Fragment() {
             myReportList.layoutManager = LinearLayoutManager(context)
             myReportList.adapter = profileAdapter
             myReportList.setHasFixedSize(true)
+            myReportList.apply {
+                addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            }
         }
 
         mainViewModel.getUserReport(username, binding).observe(viewLifecycleOwner, {

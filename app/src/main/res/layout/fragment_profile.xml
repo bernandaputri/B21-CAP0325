@@ -11,6 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_data"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:fontFamily="monospace"
         android:layout_gravity="center"
         android:visibility="gone"/>
 
@@ -36,7 +39,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapse_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             app:title="@string/name"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"

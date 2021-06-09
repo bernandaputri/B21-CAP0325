@@ -12,5 +12,4 @@ interface ApiService {
         @Field("file_name") file_name:String
     ): Call<PredictResponse>
 
-    //ini gabisa
 }
