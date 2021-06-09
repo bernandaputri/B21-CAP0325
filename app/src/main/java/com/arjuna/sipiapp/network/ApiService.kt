@@ -7,9 +7,10 @@ import retrofit2.http.*
 interface ApiService {
 
     @Multipart
-    @POST("predict?path={file_name}")
+    @POST("predict?path={imgUrl}")
     fun predictObject(
-        @Field("file_name") file_name:String
+        @Path("imgUrl") imgUrl: String
     ): Call<PredictResponse>
 
+    // gagal
 }

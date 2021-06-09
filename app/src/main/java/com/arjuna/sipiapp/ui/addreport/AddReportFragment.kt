@@ -98,7 +98,8 @@ class AddReportFragment : Fragment() {
     }
 
     private fun predict() {
-        val client = ApiConfig.getApiService().predictObject(imgFilename)
+
+        val client = ApiConfig.getApiService().predictObject(imgUrl)
         client.enqueue(object : Callback<PredictResponse> {
             override fun onResponse(
                 call: Call<PredictResponse>,
