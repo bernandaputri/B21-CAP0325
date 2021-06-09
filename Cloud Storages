@@ -1,0 +1,21 @@
+#Create Bucket
+1.In the Google Cloud Console, go to the Cloud Storage Browser page
+2.Click Create bucket.
+3.On the Create a bucket page, enter your bucket information. To go to the next step, click Continue.
+  For Name your bucket, enter a name that meets the bucket naming requirements.
+  For Choose where to store your data, select a Location type and Location option where the bucket data will be permanently stored.
+  For Choose a default storage class for your data, select a storage class for the bucket. The default storage class is assigned by default to all objects uploaded to the bucket.
+  For Choose how to control access to objects, select an Access control option. The access control model determines how you control access to the bucket's objects.
+  For Advanced settings (optional), add bucket labels, set a retention policy, and choose an encryption method.
+4.Click Create
+
+#CLI
+gsutil mb gs://projectlist1
+creating gs://projectlist1/
+gsutil mb -p PROJECT_ID -c STORAGE_CLASS -l BUCKET_LOCATION -b on gs://BUCKET_NAME
+gsutil ls
+gsutil ls -r gs://projectlist1/
+
+#Upload object
+gsutil cp tet.jpg gs://projectlist1/
+ 
