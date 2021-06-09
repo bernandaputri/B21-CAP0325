@@ -105,34 +105,44 @@ class AddReportFragment : Fragment() {
                 response: Response<PredictResponse>
             ) {
                 val predictReport = response.body()
-                val minorBuilding = predictReport?.minorBuilding.toString()
-                val minorBridge = predictReport?.minorBridge.toString()
-                val minorRoad = predictReport?.minorRoad.toString()
-                val moderateBuilding = predictReport?.moderateBuilding.toString()
-                val moderateBridge = predictReport?.moderateBridge.toString()
-                val moderateRoad = predictReport?.moderateRoad.toString()
-                val heavyBuilding = predictReport?.heavyBuilding.toString()
-                val heavyBridge = predictReport?.heavyBridge.toString()
-                val heavyRoad = predictReport?.heavyRoad.toString()
+                val minorBuilding = predictReport?.minorBuilding
+                val minorBridge = predictReport?.minorBridge
+                val minorRoad = predictReport?.minorRoad
+                val moderateBuilding = predictReport?.moderateBuilding
+                val moderateBridge = predictReport?.moderateBridge
+                val moderateRoad = predictReport?.moderateRoad
+                val heavyBuilding = predictReport?.heavyBuilding
+                val heavyBridge = predictReport?.heavyBridge
+                val heavyRoad = predictReport?.heavyRoad
 
-                if (minorBuilding == "1.0") {
-                    damageStatus = "Bangunan rusak ringan."
-                } else if (minorBridge == "1.0") {
-                    damageStatus = "Jembatan rusak ringan."
-                } else if (minorRoad == "1.0") {
-                    damageStatus = "Jalan rusak ringan."
-                } else if (moderateBuilding == "1.0") {
-                    damageStatus = "Bagungan rusak sedang."
-                } else if (moderateBridge == "1.0") {
-                    damageStatus = "Jembatan rusak sedang."
-                } else if (moderateRoad == "1.0") {
-                    damageStatus = "Jalan rusak sedang."
-                } else if (heavyBuilding == "1.0") {
-                    damageStatus = "Bangunan rusak berat."
-                } else if (heavyBridge == "1.0") {
-                    damageStatus = "Jembatan rusak berat."
-                } else if (heavyRoad == "1.0") {
-                    damageStatus = "Jalan rusak berat."
+                when {
+                    minorBuilding == 1.0 -> {
+                        damageStatus = "Bangunan rusak ringan."
+                    }
+                    minorBridge == 1.0 -> {
+                        damageStatus = "Jembatan rusak ringan."
+                    }
+                    minorRoad == 1.0 -> {
+                        damageStatus = "Jalan rusak ringan."
+                    }
+                    moderateBuilding == 1.0 -> {
+                        damageStatus = "Bagungan rusak sedang."
+                    }
+                    moderateBridge == 1.0 -> {
+                        damageStatus = "Jembatan rusak sedang."
+                    }
+                    moderateRoad == 1.0 -> {
+                        damageStatus = "Jalan rusak sedang."
+                    }
+                    heavyBuilding == 1.0 -> {
+                        damageStatus = "Bangunan rusak berat."
+                    }
+                    heavyBridge == 1.0 -> {
+                        damageStatus = "Jembatan rusak berat."
+                    }
+                    heavyRoad == 1.0 -> {
+                        damageStatus = "Jalan rusak berat."
+                    }
                 }
 
                 updateStatus()
@@ -146,13 +156,15 @@ class AddReportFragment : Fragment() {
     }
 
     private fun updateStatus() {
-        userPref = UserPreferences(requireContext())
-
         val status = hashMapOf(
             "status" to damageStatus
         )
 
         firebaseFirestore.collection("reports").document(reportId).set(status)
+            .addOnSuccessListener {
+                binding.progressBar.visibility = View.GONE
+                clearForm()
+            }
     }
 
     private fun clearForm() {

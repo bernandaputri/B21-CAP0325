@@ -34,5 +34,11 @@ class ResultReportActivity : AppCompatActivity() {
         binding.edtReportTitle.text = report?.reportName
         binding.edtLocation.text = report?.reportLocation
         binding.reportResult.text = report?.reportResult
+        binding.reportUploader.text = "Dilaporkan oleh " + report?.reportUser
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
