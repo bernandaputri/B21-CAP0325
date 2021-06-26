@@ -1,0 +1,5 @@
+Flask>=2.0.0
+tensorflow>=2.0.0
+numpy==1.19.5
+google-cloud-storage==1.38.0
+pillow>=7.1.2
