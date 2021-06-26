@@ -7,12 +7,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arjuna.sipiapp.R
 import com.arjuna.sipiapp.UserPreferences
 import com.arjuna.sipiapp.data.PredictResponse
 import com.arjuna.sipiapp.databinding.FragmentAddReportBinding
@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -36,6 +37,8 @@ class AddReportFragment : Fragment() {
     private lateinit var imgFilename: String
     private lateinit var damageStatus: String
     private lateinit var reportId: String
+    private lateinit var imgString: String
+    private lateinit var imgBitmap: Bitmap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,12 +50,17 @@ class AddReportFragment : Fragment() {
 
         clearForm()
 
+        binding.btnPredict.visibility = View.INVISIBLE
+
         binding.btnImage.setOnClickListener { selectImage() }
 
         binding.btnSend.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
+//            predict()
             uploadImageProcess()
         }
+
+        binding.btnPredict.setOnClickListener { process() }
 
         return binding.root
     }
@@ -87,19 +95,18 @@ class AddReportFragment : Fragment() {
         report["location"] = location
         report["reported_by"] = userModel.username.toString()
         report["imageUrl"] = imgUrl
-        report["status"] = ""
+        report["status"] = damageStatus
         report["filename"] = imgFilename
         reportDb.set(report).addOnSuccessListener {
             binding.progressBar.visibility = View.GONE
             clearForm()
-//            predict()
         }
 
     }
 
     private fun predict() {
 
-        val client = ApiConfig.getApiService().predictObject(imgUrl)
+        val client = ApiConfig.getApiService().predictObject(imgString)
         client.enqueue(object : Callback<PredictResponse> {
             override fun onResponse(
                 call: Call<PredictResponse>,
@@ -117,36 +124,38 @@ class AddReportFragment : Fragment() {
                 val heavyRoad = predictReport?.heavyRoad
 
                 when {
-                    minorBuilding == 1.0 -> {
+                    minorBuilding == "1.0" -> {
                         damageStatus = "Bangunan rusak ringan."
                     }
-                    minorBridge == 1.0 -> {
+                    minorBridge == "1.0" -> {
                         damageStatus = "Jembatan rusak ringan."
                     }
-                    minorRoad == 1.0 -> {
+                    minorRoad == "1.0" -> {
                         damageStatus = "Jalan rusak ringan."
                     }
-                    moderateBuilding == 1.0 -> {
+                    moderateBuilding == "1.0" -> {
                         damageStatus = "Bagungan rusak sedang."
                     }
-                    moderateBridge == 1.0 -> {
+                    moderateBridge == "1.0" -> {
                         damageStatus = "Jembatan rusak sedang."
                     }
-                    moderateRoad == 1.0 -> {
+                    moderateRoad == "1.0" -> {
                         damageStatus = "Jalan rusak sedang."
                     }
-                    heavyBuilding == 1.0 -> {
+                    heavyBuilding == "1.0" -> {
                         damageStatus = "Bangunan rusak berat."
                     }
-                    heavyBridge == 1.0 -> {
+                    heavyBridge == "1.0" -> {
                         damageStatus = "Jembatan rusak berat."
                     }
-                    heavyRoad == 1.0 -> {
+                    heavyRoad == "1.0" -> {
                         damageStatus = "Jalan rusak berat."
                     }
                 }
 
-                updateStatus()
+                binding.tvPredict.text = damageStatus
+
+//                updateStatus()
             }
 
             override fun onFailure(call: Call<PredictResponse>, t: Throwable) {
@@ -187,11 +196,22 @@ class AddReportFragment : Fragment() {
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data?.data!!
-            val imgBitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+            imgBitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
 
             val bitmapDrawable = BitmapDrawable(imgBitmap)
             binding.imageView.setImageDrawable(bitmapDrawable)
+            binding.btnPredict.visibility = View.VISIBLE
         }
+    }
+
+    private fun process() {
+
+        val stream = ByteArrayOutputStream()
+        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val streamImg = stream.toByteArray()
+        imgString = Base64.encodeToString(streamImg, Base64.DEFAULT)
+
+        predict()
     }
 
     private fun uploadImageProcess() {

@@ -6,37 +6,37 @@ import com.google.gson.annotations.SerializedName
 data class PredictResponse(
     @field:SerializedName("minor_building")
     @Expose
-    val minorBuilding: Double,
+    var minorBuilding: String,
 
     @field:SerializedName("heavy_bridge")
     @Expose
-    val heavyBridge: Double,
+    var heavyBridge: String,
 
     @field:SerializedName("moderate_bridge")
     @Expose
-    val moderateBridge: Double,
+    var moderateBridge: String,
 
     @field:SerializedName("minor_bridge")
     @Expose
-    val minorBridge: Double,
+    var minorBridge: String,
 
     @field:SerializedName("heavy_building")
     @Expose
-    val heavyBuilding: Double,
+    var heavyBuilding: String,
 
     @field:SerializedName("heavy_road")
     @Expose
-    val heavyRoad: Double,
+    var heavyRoad: String,
 
     @field:SerializedName("moderate_road")
     @Expose
-    val moderateRoad: Double,
+    var moderateRoad: String,
 
     @field:SerializedName("moderate_building")
     @Expose
-    val moderateBuilding: Double,
+    var moderateBuilding: String,
 
     @field:SerializedName("minor_road")
     @Expose
-    val minorRoad: Double
+    var minorRoad: String
 )

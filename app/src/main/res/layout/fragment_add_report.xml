@@ -132,6 +132,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_image"/>
 
+            <Button
+                android:id="@+id/btn_predict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/predict"
+                app:layout_constraintTop_toBottomOf="@id/image_view" />
+
+            <TextView
+                android:id="@+id/tv_predict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/predict"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:fontFamily="serif"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_predict"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

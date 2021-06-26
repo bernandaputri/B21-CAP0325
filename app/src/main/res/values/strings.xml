@@ -28,4 +28,5 @@
     <string name="send_report">Kirim Laporan</string>
     <string name="no_data">Tidak ada data.</string>
     <string name="detail_report">Detail Laporan</string>
+    <string name="predict">Prediksi</string>
 </resources>
